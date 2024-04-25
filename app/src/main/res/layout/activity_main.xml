@@ -4,43 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp"
-    android:layout_marginStart="30dp"
-    android:layout_marginEnd="30dp"
+    android:padding="30dp"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/image_1"
-        android:layout_width="@dimen/size_image"
-        android:layout_height="@dimen/size_image"
+        style="@style/style_for_image"
         android:src="@drawable/image_game"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/image_2_1"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/image_2_1"
-        android:layout_width="@dimen/size_image"
-        android:layout_height="@dimen/size_image"
+        style="@style/style_for_image"
         android:src="@drawable/image_rule"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_1"/>
 
     <ImageView
         android:id="@+id/image_2_2"
-        android:layout_width="@dimen/size_image"
-        android:layout_height="@dimen/size_image"
+        style="@style/style_for_image"
         android:src="@drawable/image_rule"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_1"/>
+
+    <TextView
+        style="@style/style_for_text"
+        android:id="@+id/result"
+        android:text="Выбор:"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_2_1" />
+
+    <TextView
+        android:id="@+id/textChoiceUser"
+        style="@style/style_for_text"
+        android:text="Пользователя - "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result" />
+
+    <TextView
+        android:id="@+id/textChoiceComputer"
+        style="@style/style_for_text"
+        android:text="Компьютера - "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result" />
 
     <Button
         android:id="@+id/btnRock"
         style="@style/style_for_button"
         android:text="Камень"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="@dimen/margin_top_for_button_1"
         app:cornerRadius="@dimen/radius_for_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_2_1" />
@@ -57,7 +73,7 @@
         android:id="@+id/btnScissors"
         style="@style/style_for_button"
         android:text="Ножницы"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="@dimen/margin_top_for_button_1"
         app:cornerRadius="@dimen/radius_for_button"
         app:layout_constraintTop_toBottomOf="@id/image_2_2"
         app:layout_constraintEnd_toEndOf="parent"/>
