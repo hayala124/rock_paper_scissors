@@ -30,10 +30,9 @@
         app:layout_constraintTop_toBottomOf="@id/image_1"/>
 
     <TextView
-        style="@style/style_for_text"
         android:id="@+id/result"
-        android:text="Выбор:"
-        android:visibility="visible"
+        style="@style/style_for_text"
+        android:text="Результаты выборов:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_2_1" />
@@ -41,16 +40,33 @@
     <TextView
         android:id="@+id/textChoiceUser"
         style="@style/style_for_text"
-        android:text="Пользователя - "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/result" />
 
     <TextView
         android:id="@+id/textChoiceComputer"
         style="@style/style_for_text"
-        android:text="Компьютера - "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/result" />
+
+    <TextView
+        android:id="@+id/textWinner"
+        style="@style/style_for_text"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textChoiceComputer"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/btnStartOver"
+        style="@style/style_for_button"
+        app:cornerRadius="@dimen/radius_for_button"
+        android:visibility="invisible"
+        android:text="Начать сначала"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWinner" />
 
     <Button
         android:id="@+id/btnRock"

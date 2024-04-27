@@ -17,15 +17,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonScissors: Button
     private lateinit var buttonLizard: Button
     private lateinit var buttonSpock: Button
+    private lateinit var buttonStartOver: Button
     private lateinit var computerText: TextView
     private lateinit var userText: TextView
+    private lateinit var textResult_Winner: TextView
+    private lateinit var result: TextView
 
     private var nameChoiceComputer = ""
     private var choiceComputer = 0
     private var nameChoiceUser = ""
     private var choiceUser = 0
     private var step = "user"
-    //private var choice = listOf(1, 2', '3', '4', '5')
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +42,17 @@ class MainActivity : AppCompatActivity() {
         buttonSpock = binding.btnSpock
         computerText = binding.textChoiceComputer
         userText = binding.textChoiceUser
+        buttonStartOver = binding.btnStartOver
+        textResult_Winner = binding.textWinner
+        result = binding.result
 
         buttonPlay.setOnClickListener { onButtonPlayPressed() }
-        buttonRock.setOnClickListener { choiceUser = onButtonRockPressed() }
-        buttonPaper.setOnClickListener { choiceUser = onButtonPaperPressed() }
-        buttonScissors.setOnClickListener { choiceUser = onButtonScissorsPressed() }
-        buttonLizard.setOnClickListener { choiceUser = onButtonLizardPressed() }
-        buttonSpock.setOnClickListener { choiceUser = onButtonSpockPressed() }
+        buttonRock.setOnClickListener { onButtonRockPressed() }
+        buttonPaper.setOnClickListener { onButtonPaperPressed() }
+        buttonScissors.setOnClickListener { onButtonScissorsPressed() }
+        buttonLizard.setOnClickListener { onButtonLizardPressed() }
+        buttonSpock.setOnClickListener { onButtonSpockPressed() }
+        buttonStartOver.setOnClickListener { onButtonStartOverPressed() }
     }
 
     private fun onButtonPlayPressed() {
@@ -59,55 +65,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             choiceComputer = Random.nextInt(1, 6)
             changesAfterUserSelection()
-            Toast.makeText(applicationContext, choiceComputer.toString(), Toast.LENGTH_SHORT).show()
             getResultOfGame()
             step = "user"
         }
-    }
-
-    private fun getResultOfGame() {
-        //1-камень, 2-бумага, 3-ножницы, 4-ящерица, 5-спок
-        if (choiceUser == choiceComputer)
-            onCreate(savedInstanceState = null)
-        else if ((choiceUser == 1 && (choiceComputer == 3 || choiceComputer == 4)) ||
-            (choiceUser == 2 && (choiceComputer == 1 || choiceComputer == 5)) ||
-            (choiceUser == 3 && (choiceComputer == 2 || choiceComputer == 4)) ||
-            (choiceUser == 4 && (choiceComputer == 5 || choiceComputer == 2)) ||
-            (choiceUser == 5 && (choiceComputer == 3 || choiceComputer == 1))
-        )
-            Toast.makeText(applicationContext, "Победил пользователь", Toast.LENGTH_SHORT).show()
-        else
-            Toast.makeText(applicationContext, "Победил компьютер", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onButtonRockPressed(): Int {
-        step = "computer"
-        choiceUser = 1
-        return choiceUser
-    }
-
-    private fun onButtonPaperPressed(): Int {
-        step = "computer"
-        choiceUser = 2
-        return choiceUser
-    }
-
-    private fun onButtonScissorsPressed(): Int {
-        step = "computer"
-        choiceUser = 3
-        return choiceUser
-    }
-
-    private fun onButtonLizardPressed(): Int {
-        step = "computer"
-        choiceUser = 4
-        return choiceUser
-    }
-
-    private fun onButtonSpockPressed(): Int {
-        step = "computer"
-        choiceUser = 5
-        return choiceUser
     }
 
     private fun changesAfterUserSelection() {
@@ -117,14 +77,17 @@ class MainActivity : AppCompatActivity() {
         buttonLizard.visibility = View.GONE
         buttonRock.visibility = View.GONE
 
-        //1-камень, 2-бумага, 3-ножницы, 4-ящерица, 5-спок
         nameChoiceComputer = valueOfNumber(choiceComputer, nameChoiceComputer)
         nameChoiceUser = valueOfNumber(choiceUser, nameChoiceUser)
         computerText.visibility = View.VISIBLE
         userText.visibility = View.VISIBLE
+        result.visibility = View.VISIBLE
 
-        computerText.text = "Компьютера - $nameChoiceComputer"
-        userText.text = "Пользователя - $nameChoiceUser"
+        computerText.setText("Компьютера - \n$nameChoiceComputer")
+        userText.setText("Пользователя - \n$nameChoiceUser")
+
+        buttonPlay.visibility = View.GONE
+        buttonStartOver.visibility = View.VISIBLE
     }
 
     private fun valueOfNumber(choice: Int, nameChoice: String):String {
@@ -137,5 +100,62 @@ class MainActivity : AppCompatActivity() {
             5 -> name = "спок"
         }
         return name
+    }
+
+    private fun getResultOfGame() {
+        textResult_Winner.visibility = View.VISIBLE
+
+        if (choiceUser == choiceComputer)
+            textResult_Winner.text = "Победила ничья, попробуйте переиграть"
+        else if ((choiceUser == 1 && (choiceComputer == 3 || choiceComputer == 4)) ||
+            (choiceUser == 2 && (choiceComputer == 1 || choiceComputer == 5)) ||
+            (choiceUser == 3 && (choiceComputer == 2 || choiceComputer == 4)) ||
+            (choiceUser == 4 && (choiceComputer == 5 || choiceComputer == 2)) ||
+            (choiceUser == 5 && (choiceComputer == 3 || choiceComputer == 1))
+        )
+            textResult_Winner.text = "Победил пользователь"
+        else
+            textResult_Winner.text = "Победил компьютер"
+    }
+
+    private fun onButtonStartOverPressed() {
+        buttonScissors.visibility = View.VISIBLE
+        buttonPaper.visibility = View.VISIBLE
+        buttonSpock.visibility = View.VISIBLE
+        buttonLizard.visibility = View.VISIBLE
+        buttonRock.visibility = View.VISIBLE
+
+        computerText.visibility = View.GONE
+        userText.visibility = View.GONE
+        textResult_Winner.visibility = View.GONE
+        result.visibility = View.GONE
+
+            buttonPlay.visibility = View.VISIBLE
+        buttonStartOver.visibility = View.GONE
+    }
+
+    private fun onButtonRockPressed() {
+        step = "computer"
+        choiceUser = 1
+    }
+
+    private fun onButtonPaperPressed() {
+        step = "computer"
+        choiceUser = 2
+    }
+
+    private fun onButtonScissorsPressed() {
+        step = "computer"
+        choiceUser = 3
+    }
+
+    private fun onButtonLizardPressed() {
+        step = "computer"
+        choiceUser = 4
+    }
+
+    private fun onButtonSpockPressed() {
+        step = "computer"
+        choiceUser = 5
     }
 }
