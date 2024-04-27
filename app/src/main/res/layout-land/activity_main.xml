@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/image_1"
+        style="@style/style_for_image"
+        android:src="@drawable/image_game"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/image_2_1"
+        style="@style/style_for_image"
+        android:src="@drawable/image_rule"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/image_2_2"
+        style="@style/style_for_image"
+        android:src="@drawable/image_rule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/result"
+        style="@style/style_for_text"
+        android:text="Результаты выборов:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_2_1" />
+
+    <TextView
+        android:id="@+id/textChoiceUser"
+        style="@style/style_for_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result" />
+
+    <TextView
+        android:visibility="visible"
+        android:id="@+id/textChoiceComputer"
+        style="@style/style_for_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result" />
+
+    <TextView
+        android:id="@+id/textWinner"
+        style="@style/style_for_text"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/btnStartOver"
+        style="@style/style_for_button"
+        android:visibility="gone"
+        app:cornerRadius="@dimen/radius_for_button"
+        android:text="Начать сначала"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWinner" />
+
+    <Button
+        android:id="@+id/btnRock"
+        style="@style/style_for_button"
+        android:text="Камень"
+        android:layout_marginTop="@dimen/margin_top_for_button_1_2"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_2_1" />
+
+    <Button
+        android:id="@+id/btnPaper"
+        style="@style/style_for_button"
+        android:text="Бумага"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintTop_toBottomOf="@id/btnRock"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+        android:id="@+id/btnScissors"
+        style="@style/style_for_button"
+        android:text="Ножницы"
+        android:layout_marginTop="@dimen/margin_top_for_button_1_2"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintTop_toBottomOf="@id/image_2_2"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnLizard"
+        style="@style/style_for_button"
+        android:text="Ящерица"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintTop_toBottomOf="@id/btnScissors"
+        app:layout_constraintEnd_toEndOf="@id/btnScissors"/>
+
+    <Button
+        android:id="@+id/btnSpock"
+        android:layout_width="wrap_content"
+        style="@style/style_for_button"
+        android:text="Спок"
+        android:layout_marginTop="50dp"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintTop_toBottomOf="@id/image_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="match_parent"
+        style="@style/style_for_button"
+        android:text="Игра"
+        app:cornerRadius="@dimen/radius_for_button"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,4 +4,9 @@
     <dimen name="margin_top_for_button_1">80dp</dimen>
     <dimen name="margin_top_for_button_2">20dp</dimen>
     <dimen name="radius_for_button">6dp</dimen>
+
+    <!-- Размеры для ландшафтной ориентации -->
+    <dimen name="size_image_2">100dp</dimen>
+    <dimen name="margin_top_for_button_1_2">20dp</dimen>
+    <dimen name="margin_top_for_button_2_2">5dp</dimen>
 </resources>

@@ -53,6 +53,25 @@ class MainActivity : AppCompatActivity() {
         buttonLizard.setOnClickListener { onButtonLizardPressed() }
         buttonSpock.setOnClickListener { onButtonSpockPressed() }
         buttonStartOver.setOnClickListener { onButtonStartOverPressed() }
+
+        if (savedInstanceState == null) {
+
+        }
+        else {
+
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun renderState() = with(binding) {
+
+    }
+
+    companion object {
+        @JvmStatic private val FIRST_OPERAND = "txtFirstOperand"
     }
 
     private fun onButtonPlayPressed() {
@@ -130,27 +149,31 @@ class MainActivity : AppCompatActivity() {
         textResult_Winner.visibility = View.GONE
         result.visibility = View.GONE
 
-            buttonPlay.visibility = View.VISIBLE
+        buttonPlay.visibility = View.VISIBLE
         buttonStartOver.visibility = View.GONE
     }
 
     private fun onButtonRockPressed() {
         step = "computer"
+        nameChoiceComputer = "камень"
         choiceUser = 1
     }
 
     private fun onButtonPaperPressed() {
         step = "computer"
+        nameChoiceComputer = "бумага"
         choiceUser = 2
     }
 
     private fun onButtonScissorsPressed() {
         step = "computer"
+        nameChoiceComputer = "ножницы"
         choiceUser = 3
     }
 
     private fun onButtonLizardPressed() {
         step = "computer"
+
         choiceUser = 4
     }
 
