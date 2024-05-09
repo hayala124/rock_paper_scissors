@@ -2,227 +2,184 @@ package com.hayala.rock_paper_scissors
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.hayala.rock_paper_scissors.databinding.ActivityMainBinding
+import kotlinx.parcelize.Parcelize
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var buttonPlay: Button
-    private lateinit var buttonRock: Button
-    private lateinit var buttonPaper: Button
-    private lateinit var buttonScissors: Button
-    private lateinit var buttonLizard: Button
-    private lateinit var buttonSpock: Button
-    private lateinit var buttonStartOver: Button
-    private lateinit var computerText: TextView
-    private lateinit var userText: TextView
-    private lateinit var textResult_Winner: TextView
-    private lateinit var result: TextView
-    private var choiceComputer = " "
-    private var choiceUser = " "
-    private var text_Result = " "
     private val choice = arrayOf("камень", "бумага", "ножницы", "ящерица", "спок")
+    lateinit var state: State
     private var step = "user"
-
-    private var btnRock_Visible = true
-    private var btnPaper_Visible = true
-    private var btnScissors_Visible = true
-    private var btnLizard_Visible = true
-    private var btnSpock_Visible = true
-    private var btnStartOver_Visible = false
-    private var result_Visible = false
-    private var text_result_Winner_Visible = false
-    private var userText_Visible = false
-    private var computerText_Visible = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        buttonPlay = binding.btnPlay
-        buttonRock = binding.btnRock
-        buttonPaper = binding.btnPaper
-        buttonScissors = binding.btnScissors
-        buttonLizard = binding.btnLizard
-        buttonSpock = binding.btnSpock
-        computerText = binding.textChoiceComputer
-        userText = binding.textChoiceUser
-        buttonStartOver = binding.btnStartOver
-        textResult_Winner = binding.textWinner
-        result = binding.result
+        binding.btnPlay.setOnClickListener { onButtonPlayPressed() }
+        binding.btnRock.setOnClickListener { onButtonRockPressed() }
+        binding.btnPaper.setOnClickListener { onButtonPaperPressed() }
+        binding.btnScissors.setOnClickListener { onButtonScissorsPressed() }
+        binding.btnLizard.setOnClickListener { onButtonLizardPressed() }
+        binding.btnSpock.setOnClickListener { onButtonSpockPressed() }
+        binding.btnStartOver.setOnClickListener { onButtonStartOverPressed() }
 
-        buttonPlay.setOnClickListener { onButtonPlayPressed() }
-        buttonRock.setOnClickListener { onButtonRockPressed() }
-        buttonPaper.setOnClickListener { onButtonPaperPressed() }
-        buttonScissors.setOnClickListener { onButtonScissorsPressed() }
-        buttonLizard.setOnClickListener { onButtonLizardPressed() }
-        buttonSpock.setOnClickListener { onButtonSpockPressed() }
-        buttonStartOver.setOnClickListener { onButtonStartOverPressed() }
 
-        if (savedInstanceState == null) {
-            choiceComputer = " "
-            choiceUser = " "
+        state = if (savedInstanceState == null) {
             step = "user"
-            btnRock_Visible = true
-            btnPaper_Visible = true
-            btnScissors_Visible = true
-            btnLizard_Visible = true
-            btnSpock_Visible = true
-            btnStartOver_Visible = false
-            result_Visible = false
-            text_Result = " "
-            text_result_Winner_Visible = false
-            userText_Visible = false
-            computerText_Visible = false
+            State(
+                textResultIsVisible = false,
+                choiceUser = " ",
+                choiceUserIsVisible = false,
+                choiceComputer = " ",
+                choiceComputerIsVisible = false,
+                winner = " ",
+                textWinnerIsVisible = false,
+                buttonPlayIsVisible = true,
+                buttonStartOverIsVisible = false,
+                buttonRockIsVisible = true,
+                buttonPaperIsVisible = true,
+                buttonScissorsIsVisible = true,
+                buttonLizardIsVisible = true,
+                buttonSpockIsVisible = true
+            )
         } else {
-            choiceComputer = savedInstanceState.getString(CHOICE_COMPUTER).toString()
-            choiceUser = savedInstanceState.getString(CHOICE_USER).toString()
-            step = savedInstanceState.getString(STEP).toString()
-            text_Result = savedInstanceState.getString(RESULT).toString()
-            btnRock_Visible = savedInstanceState.getBoolean(BUTTON_ROCK_VISIBLE)
-            btnPaper_Visible = savedInstanceState.getBoolean(BUTTON_PAPER_VISIBLE)
-            btnScissors_Visible = savedInstanceState.getBoolean(BUTTON_SCISSORS_VISIBLE)
-            btnLizard_Visible = savedInstanceState.getBoolean(BUTTON_LIZARD_VISIBLE)
-            btnSpock_Visible = savedInstanceState.getBoolean(BUTTON_SPOCK_VISIBLE)
-            btnStartOver_Visible = savedInstanceState.getBoolean(BUTTON_SPOCK_VISIBLE)
+            step = savedInstanceState.getString(KEY_STEP).toString()
+            savedInstanceState.getParcelable(KEY_STATE)!!
         }
-        renderState()
+        setState()
+    }
+
+    private fun setState() = with(binding) {
+        result.visibility = if (state.textResultIsVisible) View.VISIBLE else View.INVISIBLE
+        textChoiceUser.setText(state.choiceUser)
+        textChoiceUser.visibility = if (state.choiceUserIsVisible) View.VISIBLE else View.INVISIBLE
+        textChoiceComputer.setText(state.choiceComputer)
+        textChoiceComputer.visibility = if (state.choiceComputerIsVisible) View.VISIBLE else View.INVISIBLE
+        textWinner.setText(state.winner)
+        textWinner.visibility = if (state.textWinnerIsVisible) View.VISIBLE else View.INVISIBLE
+        btnPlay.visibility = if (state.buttonPlayIsVisible) View.VISIBLE else View.INVISIBLE
+        btnStartOver.visibility = if (state.buttonStartOverIsVisible) View.VISIBLE else View.INVISIBLE
+        btnRock.visibility = if (state.buttonRockIsVisible) View.VISIBLE else View.INVISIBLE
+        btnPaper.visibility = if (state.buttonPaperIsVisible) View.VISIBLE else View.INVISIBLE
+        btnScissors.visibility = if (state.buttonScissorsIsVisible) View.VISIBLE else View.INVISIBLE
+        btnLizard.visibility = if (state.buttonLizardIsVisible) View.VISIBLE else View.INVISIBLE
+        btnSpock.visibility = if (state.buttonSpockIsVisible) View.VISIBLE else View.INVISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        outState.putString(CHOICE_USER, choiceUser)
-        outState.putString(CHOICE_COMPUTER, choiceComputer)
-        outState.putString(RESULT, text_Result)
-        outState.putBoolean(BUTTON_ROCK_VISIBLE, btnRock_Visible)
-        outState.putBoolean(BUTTON_PAPER_VISIBLE, btnPaper_Visible)
-        outState.putBoolean(BUTTON_SCISSORS_VISIBLE, btnScissors_Visible)
-        outState.putBoolean(BUTTON_LIZARD_VISIBLE, btnLizard_Visible)
-        outState.putBoolean(BUTTON_SPOCK_VISIBLE, btnSpock_Visible)
-        outState.putBoolean(BUTTON_START_OVER_VISIBLE, btnStartOver_Visible)
+        outState.putParcelable(KEY_STATE, state)
+        outState.putString(KEY_STEP, step)
     }
 
-    private fun renderState() = with(binding) {
-        textChoiceUser.setText(choiceUser)
-        textChoiceComputer.setText(choiceComputer)
-        result.setText(text_Result)
-
-        btnRock.visibility = if (btnRock_Visible) View.VISIBLE else View.GONE
-        btnPaper.visibility = if (btnPaper_Visible) View.VISIBLE else View.GONE
-        btnScissors.visibility = if (btnScissors_Visible) View.VISIBLE else View.GONE
-        btnLizard.visibility = if (btnLizard_Visible) View.VISIBLE else View.GONE
-        btnSpock.visibility = if (btnSpock_Visible) View.VISIBLE else View.GONE
-
-    }
+    @Parcelize
+    class State(
+        var textResultIsVisible: Boolean,
+        var choiceUser: String,
+        var choiceUserIsVisible: Boolean,
+        var choiceComputer: String,
+        var choiceComputerIsVisible: Boolean,
+        var winner: String,
+        var textWinnerIsVisible: Boolean,
+        var buttonPlayIsVisible: Boolean,
+        var buttonStartOverIsVisible: Boolean,
+        var buttonRockIsVisible: Boolean,
+        var buttonPaperIsVisible: Boolean,
+        var buttonScissorsIsVisible: Boolean,
+        var buttonLizardIsVisible: Boolean,
+        var buttonSpockIsVisible: Boolean,
+    ) : Parcelable
 
     companion object {
-        @JvmStatic private val CHOICE_COMPUTER = "choice_computer"
-        @JvmStatic private val CHOICE_USER = "choice_user"
-        @JvmStatic private val RESULT = "winner"
-        @JvmStatic private val STEP = "step"
-        @JvmStatic private val BUTTON_ROCK_VISIBLE = "rock_visible"
-        @JvmStatic private val BUTTON_PAPER_VISIBLE = "paper_visible"
-        @JvmStatic private val BUTTON_SCISSORS_VISIBLE = "scissors_visible"
-        @JvmStatic private val BUTTON_LIZARD_VISIBLE = "lizard_visible"
-        @JvmStatic private val BUTTON_SPOCK_VISIBLE = "spock_visible"
-        @JvmStatic private val BUTTON_START_OVER_VISIBLE = "start_over_visible"
-        @JvmStatic private val RESULT_VISIBLE = "result"
-        @JvmStatic private val TEXT_RESULT_WINNER_VISIBLE = "result_winner"
-        @JvmStatic private val USER_TEXT_VISIBLE = "user_text"
-        @JvmStatic private val COMPUTER_TEXT_VISIBLE = "computer_text"
+        @JvmStatic private val KEY_STATE = "STATE"
+        @JvmStatic private val KEY_STEP = "STEP"
     }
 
     private fun onButtonPlayPressed() {
-        if (step == "user") {
-            Toast.makeText(applicationContext, "Сделайте выбор, прежде чем продолжить!", Toast.LENGTH_SHORT).show()
-        } else {
-            choiceComputer = choice.random()
+        if (step == "user") { Toast.makeText(applicationContext, "Сделайте выбор, прежде чем продолжить!", Toast.LENGTH_SHORT).show() }
+        else {
+            state.choiceComputer = choice.random()
             changesAfterUserSelection()
             getResultOfGame()
             step = "user"
+            setState()
         }
     }
 
     private fun changesAfterUserSelection() {
-        buttonScissors.visibility = View.GONE
-        buttonPaper.visibility = View.GONE
-        buttonSpock.visibility = View.GONE
-        buttonLizard.visibility = View.GONE
-        buttonRock.visibility = View.GONE
+        state.buttonScissorsIsVisible = !state.buttonScissorsIsVisible
+        state.buttonPaperIsVisible = !state.buttonPaperIsVisible
+        state.buttonSpockIsVisible = !state.buttonSpockIsVisible
+        state.buttonLizardIsVisible = !state.buttonLizardIsVisible
+        state.buttonRockIsVisible = !state.buttonRockIsVisible
 
-        computerText.visibility = View.VISIBLE
-        userText.visibility = View.VISIBLE
-        result.visibility = View.VISIBLE
+        state.choiceUserIsVisible = !state.choiceUserIsVisible
+        state.choiceComputerIsVisible = !state.choiceComputerIsVisible
+        state.textResultIsVisible = !state.textResultIsVisible
 
-        computerText.setText("Компьютера - \n$choiceComputer")
-        userText.setText("Пользователя - \n$choiceUser")
-
-        buttonPlay.visibility = View.GONE
-        buttonStartOver.visibility = View.VISIBLE
+        state.buttonPlayIsVisible = !state.buttonPlayIsVisible
+        state.buttonStartOverIsVisible = !state.buttonStartOverIsVisible
     }
 
     private fun getResultOfGame() {
-        textResult_Winner.visibility = View.VISIBLE
+        state.textWinnerIsVisible = !state.textWinnerIsVisible
 
-        if (choiceUser == choiceComputer)
-            textResult_Winner.text = "Победила ничья, попробуйте переиграть"
-        else if ((choiceUser == choice[0] && (choiceComputer == choice[2] || choiceComputer == choice[3])) ||
-            (choiceUser == choice[1] && (choiceComputer == choice[0] || choiceComputer == choice[4])) ||
-            (choiceUser == choice[2] && (choiceComputer == choice[1] || choiceComputer == choice[3])) ||
-            (choiceUser == choice[3] && (choiceComputer == choice[4] || choiceComputer == choice[1])) ||
-            (choiceUser == choice[4] && (choiceComputer == choice[2] || choiceComputer == choice[0]))
-        ) {
-            text_Result = "Победил пользователь"
-            textResult_Winner.text = text_Result
-        } else {
-            text_Result = "Победил компьютер"
-            textResult_Winner.text = text_Result
-        }
+        if (state.choiceUser == state.choiceComputer)
+            state.winner = "Победила ничья, попробуйте переиграть"
+        else if ((state.choiceUser == choice[0] && (state.choiceComputer == choice[2] || state.choiceComputer == choice[3])) ||
+            (state.choiceUser == choice[1] && (state.choiceComputer == choice[0] || state.choiceComputer == choice[4])) ||
+            (state.choiceUser == choice[2] && (state.choiceComputer == choice[1] || state.choiceComputer == choice[3])) ||
+            (state.choiceUser == choice[3] && (state.choiceComputer == choice[4] || state.choiceComputer == choice[1])) ||
+            (state.choiceUser == choice[4] && (state.choiceComputer == choice[2] || state.choiceComputer == choice[0]))
+        )
+            state.winner = "Победил пользователь"
+        else
+            state.winner = "Победил компьютер"
     }
 
     private fun onButtonStartOverPressed() {
-        buttonScissors.visibility = View.VISIBLE
-        buttonPaper.visibility = View.VISIBLE
-        buttonSpock.visibility = View.VISIBLE
-        buttonLizard.visibility = View.VISIBLE
-        buttonRock.visibility = View.VISIBLE
-        buttonPlay.visibility = View.VISIBLE
+        state.buttonScissorsIsVisible = !state.buttonScissorsIsVisible
+        state.buttonPaperIsVisible = !state.buttonPaperIsVisible
+        state.buttonSpockIsVisible = !state.buttonSpockIsVisible
+        state.buttonLizardIsVisible = !state.buttonLizardIsVisible
+        state.buttonRockIsVisible = !state.buttonRockIsVisible
+        state.buttonPlayIsVisible = !state.buttonPlayIsVisible
 
-        buttonStartOver.visibility = View.GONE
-        computerText.visibility = View.GONE
-        userText.visibility = View.GONE
-        textResult_Winner.visibility = View.GONE
-        result.visibility = View.GONE
+        state.buttonStartOverIsVisible = !state.buttonStartOverIsVisible
+        state.choiceUserIsVisible = !state.choiceUserIsVisible
+        state.choiceComputerIsVisible = !state.choiceComputerIsVisible
+        state.textResultIsVisible = !state.textResultIsVisible
+        state.textWinnerIsVisible = !state.textWinnerIsVisible
+
+        setState()
     }
 
     private fun onButtonRockPressed() {
         step = "computer"
-        choiceUser = buttonRock.text.toString().lowercase()
+        state.choiceUser = binding.btnRock.text.toString().lowercase()
     }
 
     private fun onButtonPaperPressed() {
         step = "computer"
-        choiceUser = buttonPaper.text.toString().lowercase()
+        state.choiceUser = binding.btnPaper.text.toString().lowercase()
     }
 
     private fun onButtonScissorsPressed() {
         step = "computer"
-        choiceUser = buttonScissors.text.toString().lowercase()
+        state.choiceUser = binding.btnScissors.text.toString().lowercase()
     }
 
     private fun onButtonLizardPressed() {
         step = "computer"
-        choiceUser = buttonLizard.text.toString().lowercase()
+        state.choiceUser = binding.btnLizard.text.toString().lowercase()
     }
 
     private fun onButtonSpockPressed() {
         step = "computer"
-        choiceUser = buttonSpock.text.toString().lowercase()
+        state.choiceUser = binding.btnSpock.text.toString().lowercase()
     }
 }
