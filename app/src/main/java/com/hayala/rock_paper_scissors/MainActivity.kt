@@ -1,5 +1,7 @@
 package com.hayala.rock_paper_scissors
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
@@ -44,7 +46,12 @@ class MainActivity : AppCompatActivity() {
                 buttonPaperIsVisible = true,
                 buttonScissorsIsVisible = true,
                 buttonLizardIsVisible = true,
-                buttonSpockIsVisible = true
+                buttonSpockIsVisible = true,
+                buttonRockColor = getColor(R.color.purple),
+                buttonPaperColor = getColor(R.color.purple),
+                buttonSpockColor = getColor(R.color.purple),
+                buttonScissorsColor = getColor(R.color.purple),
+                buttonLizardColor = getColor(R.color.purple)
             )
         } else {
             step = savedInstanceState.getString(KEY_STEP).toString()
@@ -68,6 +75,11 @@ class MainActivity : AppCompatActivity() {
         btnScissors.visibility = if (state.buttonScissorsIsVisible) View.VISIBLE else View.INVISIBLE
         btnLizard.visibility = if (state.buttonLizardIsVisible) View.VISIBLE else View.INVISIBLE
         btnSpock.visibility = if (state.buttonSpockIsVisible) View.VISIBLE else View.INVISIBLE
+        btnRock.backgroundTintList = (ColorStateList.valueOf(state.buttonRockColor))
+        btnPaper.backgroundTintList = (ColorStateList.valueOf(state.buttonPaperColor))
+        btnSpock.backgroundTintList = (ColorStateList.valueOf(state.buttonSpockColor))
+        btnLizard.backgroundTintList = (ColorStateList.valueOf(state.buttonLizardColor))
+        btnScissors.backgroundTintList = (ColorStateList.valueOf(state.buttonScissorsColor))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -92,6 +104,12 @@ class MainActivity : AppCompatActivity() {
         var buttonScissorsIsVisible: Boolean,
         var buttonLizardIsVisible: Boolean,
         var buttonSpockIsVisible: Boolean,
+        var buttonRockColor: Int,
+        var buttonPaperColor: Int,
+        var buttonScissorsColor: Int,
+        var buttonLizardColor: Int,
+        var buttonSpockColor: Int,
+
     ) : Parcelable
 
     companion object {
@@ -155,31 +173,80 @@ class MainActivity : AppCompatActivity() {
         state.textResultIsVisible = !state.textResultIsVisible
         state.textWinnerIsVisible = !state.textWinnerIsVisible
 
+        state.buttonRockColor = getColor(R.color.purple)
+        state.buttonPaperColor = getColor(R.color.purple)
+        state.buttonSpockColor = getColor(R.color.purple)
+        state.buttonScissorsColor = getColor(R.color.purple)
+        state.buttonLizardColor = getColor(R.color.purple)
         setState()
     }
 
     private fun onButtonRockPressed() {
-        step = "computer"
+        step = "rock"
+        buttonColorChangesAfterSelection()
         state.choiceUser = binding.btnRock.text.toString().lowercase()
     }
 
     private fun onButtonPaperPressed() {
-        step = "computer"
+        step = "paper"
+        buttonColorChangesAfterSelection()
         state.choiceUser = binding.btnPaper.text.toString().lowercase()
     }
 
     private fun onButtonScissorsPressed() {
-        step = "computer"
+        step = "scissors"
+        buttonColorChangesAfterSelection()
         state.choiceUser = binding.btnScissors.text.toString().lowercase()
     }
 
     private fun onButtonLizardPressed() {
-        step = "computer"
+        step = "lizard"
+        buttonColorChangesAfterSelection()
         state.choiceUser = binding.btnLizard.text.toString().lowercase()
     }
 
     private fun onButtonSpockPressed() {
-        step = "computer"
+        step = "spock"
+        buttonColorChangesAfterSelection()
         state.choiceUser = binding.btnSpock.text.toString().lowercase()
+    }
+
+    private fun buttonColorChangesAfterSelection() {
+        if (step == "rock") {
+            state.buttonRockColor = getColor(R.color.green)
+            state.buttonPaperColor = getColor(R.color.purple)
+            state.buttonSpockColor = getColor(R.color.purple)
+            state.buttonScissorsColor = getColor(R.color.purple)
+            state.buttonLizardColor = getColor(R.color.purple)
+        }
+        else if (step == "paper") {
+            state.buttonRockColor = getColor(R.color.purple)
+            state.buttonPaperColor = getColor(R.color.green)
+            state.buttonSpockColor = getColor(R.color.purple)
+            state.buttonScissorsColor = getColor(R.color.purple)
+            state.buttonLizardColor = getColor(R.color.purple)
+        }
+        else if (step == "scissors") {
+            state.buttonRockColor = getColor(R.color.purple)
+            state.buttonPaperColor = getColor(R.color.purple)
+            state.buttonSpockColor = getColor(R.color.purple)
+            state.buttonScissorsColor = getColor(R.color.green)
+            state.buttonLizardColor = getColor(R.color.purple)
+        }
+        else if (step == "lizard") {
+            state.buttonRockColor = getColor(R.color.purple)
+            state.buttonPaperColor = getColor(R.color.purple)
+            state.buttonSpockColor = getColor(R.color.purple)
+            state.buttonScissorsColor = getColor(R.color.purple)
+            state.buttonLizardColor = getColor(R.color.green)
+        }
+        else if (step == "spock") {
+            state.buttonRockColor = getColor(R.color.purple)
+            state.buttonPaperColor = getColor(R.color.purple)
+            state.buttonSpockColor = getColor(R.color.green)
+            state.buttonScissorsColor = getColor(R.color.purple)
+            state.buttonLizardColor = getColor(R.color.purple)
+        }
+        setState()
     }
 }
